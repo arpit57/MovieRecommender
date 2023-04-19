@@ -8,7 +8,11 @@ movies = pickle.load(open("movie_list.pkl", "rb"))
 
 s0 = pickle.load(open("similarity.pkl_0.pkl", 'rb'))
 s1 = pickle.load(open("similarity.pkl_1.pkl", 'rb'))
-similarity = np.concatenate((s0, s1))
+s2 = pickle.load(open("similarity.pkl_2.pkl", 'rb'))
+s3 = pickle.load(open("similarity.pkl_3.pkl", 'rb'))
+s4 = pickle.load(open("similarity.pkl_4.pkl", 'rb'))
+
+similarity = np.concatenate((s0, s1, s2, s3, s4))
 # similarity = pickle.load(open("similarity.pkl", 'rb'))
 # print(movies)
 selectedMovie = st.selectbox("", movies.title)
