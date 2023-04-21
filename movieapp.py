@@ -8,19 +8,28 @@ st.title("Movie Recommender")
 
 movies = pickle.load(open("movie_list.pkl", "rb"))
 
-conn = sqlite3.connect('similarity.db')
-c = conn.cursor()
-c.execute("SELECT * FROM similarity")
-rows = c.fetchall()
-
+num_chunks = 5
 retrieved_similarity = []
 
-for row in rows:
-    row_id, data = row
-    numpy_row = np.frombuffer(data, dtype=float)
-    retrieved_similarity.append(numpy_row)
+for chunk_idx in range(num_chunks):
+    # Connect to the SQLite database for the current chunk
+    conn = sqlite3.connect(f'similarity_chunk_{chunk_idx}.db')
+    c = conn.cursor()
+
+    # Read the data from the table
+    c.execute("SELECT * FROM similarity")
+    rows = c.fetchall()
+
+    for row in rows:
+        row_id, data = row
+        numpy_row = np.frombuffer(data, dtype=float)
+        retrieved_similarity.append(numpy_row)
+
+    # Close the connection
+    conn.close()
 
 similarity = np.array(retrieved_similarity)
+
 
 
 # s0 = pickle.load(open("similarity.pkl_0.pkl", 'rb'))
